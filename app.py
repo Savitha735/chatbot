@@ -34,18 +34,86 @@ HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>PDF Chatbot</title>
+    <title>Strata Assistant</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .navbar {
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 50px auto;
+            width: 60%;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            padding: 12px 20px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #3498db;
+        }
+        .answer {
+            margin-top: 20px;
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 <body>
-    <h2>Ask something from the PDF</h2>
-    <form method="post">
-        <input type="text" name="question" style="width: 400px;" required>
-        <input type="submit" value="Ask">
-    </form>
-    {% if answer %}
-        <h3>Answer:</h3>
-        <p>{{ answer }}</p>
-    {% endif %}
+
+    <div class="navbar">Strata Assistant</div>
+
+    <div class="container">
+        <h2>Ask something from the PDF</h2>
+        <form method="post">
+            <input type="text" name="question" placeholder="Type your question here..." required>
+            <input type="submit" value="Ask">
+        </form>
+
+        {% if answer %}
+        <div class="answer">
+            <strong>Answer:</strong><br>
+            {{ answer }}
+        </div>
+        {% endif %}
+    </div>
+
 </body>
 </html>
 """
