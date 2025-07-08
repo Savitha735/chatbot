@@ -98,19 +98,6 @@ HTML_TEMPLATE = """
         .answer {
             margin-top: 5px;
         }
-        .clear-btn {
-            margin-top: 20px;
-            display: block;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .clear-btn:hover {
-            background-color: #c0392b;
-        }
     </style>
 </head>
 <body>
@@ -125,12 +112,9 @@ HTML_TEMPLATE = """
         </form>
 
         <div id="history"></div>
-
-        <button class="clear-btn" onclick="clearHistory()">Clear History</button>
     </div>
 
     <script>
-        // Load existing history
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem("qa_history")) || [];
             const historyDiv = document.getElementById("history");
@@ -138,30 +122,20 @@ HTML_TEMPLATE = """
             history.forEach(qa => {
                 const block = document.createElement("div");
                 block.className = "qa-block";
-                block.innerHTML = "<div class='question'>Q: " + qa.question + "</div><div class='answer'>A: " + qa.answer + "</div>";
+                block.innerHTML = `<div class='question'>Q: ${qa.question}</div><div class='answer'>A: ${qa.answer}</div>`;
                 historyDiv.appendChild(block);
             });
         }
 
-        // Save new QA to local storage
         function saveQA(question, answer) {
             const history = JSON.parse(localStorage.getItem("qa_history")) || [];
             history.push({question: question, answer: answer});
             localStorage.setItem("qa_history", JSON.stringify(history));
         }
 
-        // Clear history
-        function clearHistory() {
-            localStorage.removeItem("qa_history");
-            loadHistory();
-        }
-
-        // After submitting, save and reload
         document.getElementById("chat-form").addEventListener("submit", function(e) {
             const questionInput = document.getElementById("question-input");
             const question = questionInput.value;
-            const form = this;
-            // Wait until the server returns
             setTimeout(() => {
                 const answer = "{{ answer | safe }}";
                 if (answer.trim() !== "") {
@@ -172,13 +146,13 @@ HTML_TEMPLATE = """
             }, 500);
         });
 
-        // Load on start
         window.onload = loadHistory;
     </script>
 
 </body>
 </html>
 """
+
 
 
 @app.route("/", methods=["GET", "POST"])
