@@ -100,7 +100,7 @@ HTML_TEMPLATE = """
     <div class="navbar">Strata Assistant</div>
 
     <div class="container">
-        <h2>Ask something from the PDF</h2>
+        <h2>Ask anything!</h2>
         <form method="post">
             <input type="text" name="question" placeholder="Type your question here..." required>
             <input type="submit" value="Ask">
