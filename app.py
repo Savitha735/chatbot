@@ -86,12 +86,30 @@ HTML_TEMPLATE = """
         input[type="submit"]:hover {
             background-color: #3498db;
         }
-        .answer {
-            margin-top: 20px;
+        .qa-block {
             background-color: #ecf0f1;
-            padding: 20px;
+            padding: 15px;
             border-radius: 5px;
-            line-height: 1.6;
+            margin-top: 20px;
+        }
+        .question {
+            font-weight: bold;
+        }
+        .answer {
+            margin-top: 5px;
+        }
+        .clear-btn {
+            margin-top: 20px;
+            display: block;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .clear-btn:hover {
+            background-color: #c0392b;
         }
     </style>
 </head>
@@ -101,22 +119,67 @@ HTML_TEMPLATE = """
 
     <div class="container">
         <h2>Ask anything!</h2>
-        <form method="post">
-            <input type="text" name="question" placeholder="Type your question here..." required>
+        <form id="chat-form" method="post">
+            <input type="text" id="question-input" name="question" placeholder="Type your question here..." required>
             <input type="submit" value="Ask">
         </form>
 
-        {% if answer %}
-        <div class="answer">
-            <strong>Answer:</strong><br>
-            {{ answer }}
-        </div>
-        {% endif %}
+        <div id="history"></div>
+
+        <button class="clear-btn" onclick="clearHistory()">Clear History</button>
     </div>
+
+    <script>
+        // Load existing history
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem("qa_history")) || [];
+            const historyDiv = document.getElementById("history");
+            historyDiv.innerHTML = "";
+            history.forEach(qa => {
+                const block = document.createElement("div");
+                block.className = "qa-block";
+                block.innerHTML = "<div class='question'>Q: " + qa.question + "</div><div class='answer'>A: " + qa.answer + "</div>";
+                historyDiv.appendChild(block);
+            });
+        }
+
+        // Save new QA to local storage
+        function saveQA(question, answer) {
+            const history = JSON.parse(localStorage.getItem("qa_history")) || [];
+            history.push({question: question, answer: answer});
+            localStorage.setItem("qa_history", JSON.stringify(history));
+        }
+
+        // Clear history
+        function clearHistory() {
+            localStorage.removeItem("qa_history");
+            loadHistory();
+        }
+
+        // After submitting, save and reload
+        document.getElementById("chat-form").addEventListener("submit", function(e) {
+            const questionInput = document.getElementById("question-input");
+            const question = questionInput.value;
+            const form = this;
+            // Wait until the server returns
+            setTimeout(() => {
+                const answer = "{{ answer | safe }}";
+                if (answer.trim() !== "") {
+                    saveQA(question, answer);
+                    loadHistory();
+                    questionInput.value = "";
+                }
+            }, 500);
+        });
+
+        // Load on start
+        window.onload = loadHistory;
+    </script>
 
 </body>
 </html>
 """
+
 
 @app.route("/", methods=["GET", "POST"])
 def chatbot():
