@@ -136,18 +136,32 @@ def chatbot():
 
         Based on this document, answer the following question in a clear, detailed, and ordered manner. 
         Please structure your answer as a numbered list of points or steps, if appropriate.
-
+        **Do not use any HTML tags in your response. Only plain text.**
+        
         Question:
         {question}
         """
 
-        response = model.generate_content(prompt)
-        lines = answer.split("\n")
-        lines = [line.strip() for line in lines if line.strip()]
-        formatted_answer = ""
-        for idx, line in enumerate(lines, start=1):
-          formatted_answer += f"{idx}. {line}\n"
-        answer = formatted_answer 
+        try:
+         response = model.generate_content(prompt)
+         answer = response.text
+
+    # Remove any leftover HTML tags (just in case)
+         import re
+         answer = re.sub(r'<.*?>', '', answer)
+
+    # Split and number
+         lines = answer.split("\n")
+         lines = [line.strip() for line in lines if line.strip()]
+         formatted_answer = ""
+         for idx, line in enumerate(lines, start=1):
+              formatted_answer += f"{idx}. {line}\n"
+         answer = formatted_answer
+
+        except Exception as e:
+         answer = f"An error occurred: {str(e)}"
+
+        
     return render_template_string(HTML_TEMPLATE, answer=answer)
 
 if __name__ == "__main__":
