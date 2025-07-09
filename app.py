@@ -86,20 +86,12 @@ HTML_TEMPLATE = """
         input[type="submit"]:hover {
             background-color: #3498db;
         }
-        .qa-block {
+        .answer {
             margin-top: 20px;
             background-color: #ecf0f1;
             padding: 20px;
             border-radius: 5px;
             line-height: 1.6;
-        }
-        .question {
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        .answer-text {
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -114,10 +106,10 @@ HTML_TEMPLATE = """
             <input type="submit" value="Ask">
         </form>
 
-        {% if question and answer %}
-        <div class="qa-block">
-            <div class="question">Question: {{ question }}</div>
-            <div class="answer-text"><strong>Answer:</strong><br>{{ answer }}</div>
+        {% if answer %}
+        <div class="answer">
+            <strong>Answer:</strong><br>
+            {{ answer }}
         </div>
         {% endif %}
     </div>
