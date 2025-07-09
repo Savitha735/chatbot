@@ -159,9 +159,9 @@ def chatbot():
               if not line:
                 continue
         # Remove starting numbering or bullets
-           line = re.sub(r"^\s*\d+[\.\)]\s*", "", line)
-           line = re.sub(r"^[\*\-]\s*", "", line)
-           cleaned_lines.append(line)
+              line = re.sub(r"^\s*\d+[\.\)]\s*", "", line)
+              line = re.sub(r"^[\*\-]\s*", "", line)
+              cleaned_lines.append(line)
 
     # ✅ Remove first line if it's an introduction
            if cleaned_lines and "topic" in cleaned_lines[0].lower():
