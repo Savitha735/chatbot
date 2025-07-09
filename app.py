@@ -142,25 +142,39 @@ def chatbot():
         {question}
         """
 
+        import re
+
         try:
-         response = model.generate_content(prompt)
-         answer = response.text
+           response = model.generate_content(prompt)
+           answer = response.text
 
-    # Remove any leftover HTML tags (just in case)
-         import re
-         answer = re.sub(r'<.*?>', '', answer)
+    # Remove any HTML tags
+           answer = re.sub(r'<.*?>', '', answer)
 
-    # Split and number
-         lines = answer.split("\n")
-         lines = [line.strip() for line in lines if line.strip()]
-         formatted_answer = ""
-         for idx, line in enumerate(lines, start=1):
-              formatted_answer += f"{idx}. {line}\n"
-         answer = formatted_answer
+    # Split and clean
+           lines = answer.split("\n")
+           cleaned_lines = []
+           for line in lines:
+              line = line.strip()
+              if not line:
+                continue
+        # Remove starting numbering or bullets
+           line = re.sub(r"^\s*\d+[\.\)]\s*", "", line)
+           line = re.sub(r"^[\*\-]\s*", "", line)
+           cleaned_lines.append(line)
+
+    # ✅ Remove first line if it's an introduction
+           if cleaned_lines and "topic" in cleaned_lines[0].lower():
+              cleaned_lines = cleaned_lines[1:]
+
+    # Add new numbering
+           formatted_answer = ""
+           for idx, line in enumerate(cleaned_lines, start=1):
+             formatted_answer += f"{idx}. {line}\n"
+           answer = formatted_answer
 
         except Exception as e:
-         answer = f"An error occurred: {str(e)}"
-
+           answer = f"An error occurred: {str(e)}"
         
     return render_template_string(HTML_TEMPLATE, answer=answer)
 
