@@ -108,8 +108,8 @@ HTML_TEMPLATE = """
 
         {% if answer %}
         <div class="answer" style="white-space: pre-wrap;">
-          <strong>Answer:</strong><br>
-          {{ answer }}
+            <strong>Answer:</strong><br>
+            {{ answer }}
         </div>
 
         {% endif %}
@@ -142,12 +142,12 @@ def chatbot():
         """
 
         response = model.generate_content(prompt)
-       lines = answer.split("\n")
-       lines = [line.strip() for line in lines if line.strip()]
-       formatted_answer = ""
-       for idx, line in enumerate(lines, start=1):
+        lines = answer.split("\n")
+        lines = [line.strip() for line in lines if line.strip()]
+        formatted_answer = ""
+        for idx, line in enumerate(lines, start=1):
           formatted_answer += f"{idx}. {line}\n"
-       answer = formatted_answer 
+        answer = formatted_answer 
     return render_template_string(HTML_TEMPLATE, answer=answer)
 
 if __name__ == "__main__":
