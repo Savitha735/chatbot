@@ -133,7 +133,10 @@ def chatbot():
 
         {pdf_text[:12000]}  # Limit context to 12,000 characters to stay within prompt limits
 
-        Based on this document, answer the question:
+        Based on this document, answer the following question in a clear, detailed, and ordered manner. 
+        Please structure your answer as a numbered list of points or steps, if appropriate.
+
+        Question:
         {question}
         """
 
