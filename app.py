@@ -32,91 +32,139 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 # 🔥 Web UI
 HTML_TEMPLATE = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Strata Assistant</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-        .navbar {
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .container {
-            margin: 50px auto;
-            width: 60%;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: 70%;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-right: 10px;
-        }
-        input[type="submit"] {
-            padding: 12px 20px;
-            background-color: #2980b9;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #3498db;
-        }
-        .answer {
-            margin-top: 20px;
-            background-color: #ecf0f1;
-            padding: 20px;
-            border-radius: 5px;
-            line-height: 1.6;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Strata Assistant</title>
+<style>
+  /* Reset some default styles */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    color: #2c3e50;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .navbar {
+    background-color: #34495e;
+    color: white;
+    font-weight: 700;
+    font-size: 1.8rem;
+    padding: 1rem 0;
+    text-align: center;
+    letter-spacing: 1px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.1);
+  }
+  .container {
+    max-width: 700px;
+    background: white;
+    margin: 3rem auto 4rem auto;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+  }
+  h2 {
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    font-size: 1.7rem;
+    text-align: center;
+    color: #2c3e50;
+  }
+  form {
+    display: flex;
+    gap: 0.8rem;
+  }
+  input[type="text"] {
+    flex-grow: 1;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #2980b9;
+    box-shadow: 0 0 6px #2980b9aa;
+  }
+  input[type="submit"] {
+    padding: 0 1.3rem;
+    background-color: #2980b9;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  input[type="submit"]:hover {
+    background-color: #3498db;
+  }
+  .answer {
+    margin-top: 2rem;
+    background: #ecf0f1;
+    border-radius: 10px;
+    padding: 1.5rem 2rem;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #34495e;
+  }
+  /* Style bullets nicely */
+  .answer ul {
+    padding-left: 1.3rem;
+    margin-top: 1rem;
+  }
+  .answer ul li {
+    margin-bottom: 0.6rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container {
+      margin: 2rem 1rem 3rem 1rem;
+      padding: 1.8rem 1.5rem;
+    }
+    input[type="text"] {
+      font-size: 0.9rem;
+    }
+    input[type="submit"] {
+      font-size: 0.9rem;
+      padding: 0 1rem;
+    }
+  }
+</style>
 </head>
 <body>
 
-    <div class="navbar">Strata Assistant</div>
+<div class="navbar">Strata Assistant</div>
 
-    <div class="container">
-        <h2>Ask anything!</h2>
-        <form method="post">
-            <input type="text" name="question" placeholder="Type your question here..." required>
-            <input type="submit" value="Ask">
-        </form>
+<div class="container">
+  <h2>Ask anything!</h2>
+  <form method="post">
+    <input type="text" name="question" placeholder="Type your question here..." required autocomplete="off" />
+    <input type="submit" value="Ask" />
+  </form>
 
-        {% if answer %}
-        <div class="answer" style="white-space: pre-wrap;">
-            <strong>Answer:</strong><br>
-            {{ answer }}
-        </div>
-
-        {% endif %}
-    </div>
+  {% if answer %}
+  <div class="answer">
+    <strong>Answer:</strong>
+    <br>
+    {{ answer | safe }}
+  </div>
+  {% endif %}
+</div>
 
 </body>
 </html>
+
 """
 
 
