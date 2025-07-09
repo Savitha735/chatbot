@@ -173,7 +173,7 @@ def chatbot():
               if idx == 1:
                  formatted_answer += f"{line}\n"  # First line without numbering
               else:
-                 formatted_answer += f"{idx - 1}. {line}\n"  # Numbering starts from 1 for the second line onwards
+                 formatted_answer += f" • {line}\n"  # Numbering starts from 1 for the second line onwards
            answer = formatted_answer
 
 
