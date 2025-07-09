@@ -3,6 +3,7 @@ import google.generativeai as genai
 import PyPDF2
 import requests
 from io import BytesIO
+import re
 
 app = Flask(__name__)
 
@@ -189,8 +190,6 @@ def chatbot():
         Question:
         {question}
         """
-
-        import re
 
         try:
            response = model.generate_content(prompt)
