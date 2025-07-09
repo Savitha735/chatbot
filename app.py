@@ -107,10 +107,11 @@ HTML_TEMPLATE = """
         </form>
 
         {% if answer %}
-        <div class="answer" ,style="white-space: pre-wrap;>
-            <strong>Answer:</strong><br>
-            {{ answer }}
+        <div class="answer" style="white-space: pre-wrap;">
+          <strong>Answer:</strong><br>
+          {{ answer }}
         </div>
+
         {% endif %}
     </div>
 
