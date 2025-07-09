@@ -142,7 +142,11 @@ def chatbot():
 
         response = model.generate_content(prompt)
         answer = response.text
+        formatted_answer = answer.replace("\n", "</li><li>")
+        formatted_answer = f"<ol><li>{formatted_answer}</li></ol>"
 
+        # Replace original `answer` with formatted version
+        answer = formatted_answer
     return render_template_string(HTML_TEMPLATE, answer=answer)
 
 if __name__ == "__main__":
