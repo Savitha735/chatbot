@@ -170,8 +170,12 @@ def chatbot():
     # Add new numbering
            formatted_answer = ""
            for idx, line in enumerate(cleaned_lines, start=1):
-             formatted_answer += f"{idx}. {line}\n"
+              if idx == 1:
+                 formatted_answer += f"{line}\n"  # First line without numbering
+              else:
+                 formatted_answer += f"{idx - 1}. {line}\n"  # Numbering starts from 1 for the second line onwards
            answer = formatted_answer
+
 
         except Exception as e:
            answer = f"An error occurred: {str(e)}"
