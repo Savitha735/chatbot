@@ -86,17 +86,12 @@ HTML_TEMPLATE = """
         input[type="submit"]:hover {
             background-color: #3498db;
         }
-        .qa-block {
-            background-color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        .question {
-            font-weight: bold;
-        }
         .answer {
-            margin-top: 5px;
+            margin-top: 20px;
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -106,48 +101,18 @@ HTML_TEMPLATE = """
 
     <div class="container">
         <h2>Ask anything!</h2>
-        <form id="chat-form" method="post">
-            <input type="text" id="question-input" name="question" placeholder="Type your question here..." required>
+        <form method="post">
+            <input type="text" name="question" placeholder="Type your question here..." required>
             <input type="submit" value="Ask">
         </form>
 
-        <div id="history"></div>
+        {% if answer %}
+        <div class="answer">
+            <strong>Answer:</strong><br>
+            {{ answer }}
+        </div>
+        {% endif %}
     </div>
-
-    <script>
-        function loadHistory() {
-            const history = JSON.parse(localStorage.getItem("qa_history")) || [];
-            const historyDiv = document.getElementById("history");
-            historyDiv.innerHTML = "";
-            history.forEach(qa => {
-                const block = document.createElement("div");
-                block.className = "qa-block";
-                block.innerHTML = `<div class='question'>Q: ${qa.question}</div><div class='answer'>A: ${qa.answer}</div>`;
-                historyDiv.appendChild(block);
-            });
-        }
-
-        function saveQA(question, answer) {
-            const history = JSON.parse(localStorage.getItem("qa_history")) || [];
-            history.push({question: question, answer: answer});
-            localStorage.setItem("qa_history", JSON.stringify(history));
-        }
-
-        document.getElementById("chat-form").addEventListener("submit", function(e) {
-            const questionInput = document.getElementById("question-input");
-            const question = questionInput.value;
-            setTimeout(() => {
-                const answer = "{{ answer | safe }}";
-                if (answer.trim() !== "") {
-                    saveQA(question, answer);
-                    loadHistory();
-                    questionInput.value = "";
-                }
-            }, 500);
-        });
-
-        window.onload = loadHistory;
-    </script>
 
 </body>
 </html>
