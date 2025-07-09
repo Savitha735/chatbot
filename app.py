@@ -150,7 +150,7 @@ HTML_TEMPLATE = """
   <h2>Ask anything!</h2>
   <form method="post">
     <input type="text" name="question" placeholder="Type your question here..." required autocomplete="off" />
-    <input type="submit" value="Ask" />
+    <input type="submit" value="Send" />
   </form>
 
   {% if answer %}
